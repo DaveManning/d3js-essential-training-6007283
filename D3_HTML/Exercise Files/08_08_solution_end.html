@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>08_08 - Solution</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        circle {
+            fill: pink;
+            stroke: black;
+            stroke-width: 2px;
+        }
+        ellipse {
+            fill: blue;
+        }
+
+        text {
+            fill:red;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        let width = document.documentElement.clientWidth;
+        let height = document.documentElement.clientHeight;
+        
+        const margin = {"right": 50, "top": 50, "bottom": 50, "left": 50}
+
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+
+        const chartGroup = svg.append('g').attr('class','chartGroup').attr('transform',`translate(${margin.left},${margin.top})`);
+        
+
+        height -= margin.top + margin.bottom;
+        width -= margin.left + margin.right; 
+        
+        const data = [
+            { day: "Mon", desktop: 100, mobile: 80, tablet: 30 },
+            { day: "Tue", desktop: 120, mobile: 90, tablet: 40 },
+            { day: "Wed", desktop: 90, mobile: 70, tablet: 20 },
+            { day: "Thu", desktop: 110, mobile: 100, tablet: 50 },
+            { day: "Fri", desktop: 95, mobile: 85, tablet: 35 }
+            ];
+
+   
+        const stack = d3.stack().keys(['desktop','mobile','tablet']);
+        const stackedData = stack(data);
+        console.log(stackedData);
+
+        const xScale = d3.scaleBand()
+            .domain(data.map(d=>d.day))
+            .range([0, width])
+            .padding(0.3);//output
+
+        const yMax = d3.max(stackedData[stackedData.length-1], d=>d[1]);
+
+        const yScale = d3.scaleLinear()
+            .domain([0, yMax])
+            .range([height, 0])
+            .nice();
+        
+        chartGroup.append('g').attr('class','x axis').attr('transform',`translate(0,${height})`).call(d3.axisBottom(xScale));
+        chartGroup.append('g').attr('class','y axis').call(d3.axisLeft(yScale));
+
+        const colors = ['steelblue','turquoise','cadetblue'];
+        const layersGroup = chartGroup.selectAll('g.bar').data(stackedData).enter().append('g').attr('class','bar').attr('fill',(d,i)=>colors[i]);
+        layersGroup.selectAll('rect').data(d=>d).enter().append('rect')
+            .attr('x',d=>xScale(d.data.day))
+            .attr('y',d=>yScale(d[1]))
+            .attr('width',xScale.bandwidth())
+            .attr('height',d=>yScale(d[0]) - yScale(d[1]));
+            
+
+    </script>
+
+</body>
+</html>

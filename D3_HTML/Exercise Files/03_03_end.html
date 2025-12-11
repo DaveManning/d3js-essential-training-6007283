@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>03_03 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        circle {
+            fill: pink;
+            stroke: black;
+            stroke-width: 2px;
+        }
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:red;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+        }
+
+        line {
+            stroke: green;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+        // .attr("viewBox", "0 0 " + width + " " + height)
+        // .attr("preserveAspectRatio", "xMidYMid meet");
+        
+        svg.append("rect")
+            .attr("x","300")
+            .attr("y","200")
+            .attr("height","100")
+            .attr("width","200");
+
+        svg.append("text")
+           .text("Hello World!")
+           .attr("x","400")
+           .attr("text-anchor","middle")
+           .attr("dominant-baseline","middle")
+           .attr("y","250");
+
+
+        const dataArray = [5, 11, 16];
+
+        const boundData = svg.selectAll("rect").data(dataArray);
+        const enterSelection = boundData.enter();
+
+        // enterSelection.append("line")
+        //     .attr("x1", 100)
+        //     .attr("y1", 100)
+        //     .attr("x2", 200)
+        //     .attr("y2", 200)
+        //     .attr("stroke-width",5);
+
+      
+
+    </script>
+
+</body>
+</html>

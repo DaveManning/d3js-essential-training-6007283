@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>04_05 - Challenge</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+        }
+
+        line, path {
+            /* stroke: green;
+            stroke-width: 5px; */
+            fill: steelblue;
+        }
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+    const data = [
+        { day: 0, temp: 12 },
+        { day: 1, temp: 17 },
+        { day: 2, temp: 15 },
+        { day: 3, temp: null }, // sensor failure
+        { day: 4, temp: 18 },
+        { day: 5, temp: 20 },
+        { day: 6, temp: 16 }
+        ];
+
+    const margin = { 'left':50,'top':100,'right':0,'bottom':0 }
+
+     const interpolateTypes = [
+        d3.curveLinear,
+        d3.curveNatural,
+        d3.curveStep,
+        d3.curveBasis,
+        d3.curveCardinal,
+        d3.curveCardinalOpen
+     ]
+
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+       
+        const rows = 3, cols = 2;
+        const chartWidth = width / cols, chartHeight = height / rows;
+        const h = chartHeight / 2;
+  
+        // const line = d3.line()
+        //     .x(d=>d.x*10)
+        //     .y(d=>d.y)
+        //     .curve(d3.curveMonotoneX);
+
+        // const area = d3.area()
+        //     .x(d=>d.x*10)
+        //     .y1(d=>d.y)
+        //     .y0(height/2)
+        //     .curve(d3.curveMonotoneX);
+        
+        const groups = svg.selectAll('g').data(interpolateTypes)
+            .enter().append('g')
+            .attr('class',(d,i)=>'g'+i)
+            .attr('transform',(d,i)=>{
+                const x = (i%cols) * chartWidth;
+                const y = Math.floor(i/cols)*chartHeight;
+                return `translate(${x},${y})`;
+            });
+
+        groups.each(function(interpolate, i){
+            let area = d3.area()
+                .x(d=>d.x*5)
+                .y1(d=>d.y)
+                .y0(h)
+                .curve(interpolate)
+                .defined(d=> !isNaN(d.x) && !isNaN(d.y));
+
+            d3.select(this).append("path")
+                .datum(data)
+                .attr('d', area);
+        })
+
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>05_06 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+        }
+
+        g.tick line {
+            stroke: orange;
+        }
+
+        g.axis.x g.tick text {
+            font-size: 18px;
+        }
+
+        g.axis path {
+            stroke: black;
+        }
+
+        line, path {
+            stroke: steelblue;
+            stroke-width: 5px;
+            fill: none;
+        }
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+const data = [
+    { day: "2025-05-12", temp: 12 },
+    { day: "2025-05-13", temp: 17 },
+    { day: "2025-05-14", temp: 15 },
+    { day: "2025-05-15", temp: 15 }, 
+    { day: "2025-05-16", temp: 18 },
+    { day: "2025-05-17", temp: 92 },
+    { day: "2025-05-18", temp: 16 }
+];
+
+
+    const margin = { 'left':100,'top':100,'right':50,'bottom':50 }
+
+    const width = document.documentElement.clientWidth;
+    const height = document.documentElement.clientHeight;
+    const chartHeight = height - margin.top - margin.bottom;
+
+    data.forEach(d => d.day = new Date(d.day));
+
+    const xExtent = d3.extent(data, d => d.day);
+
+    const xScale = d3.scaleTime()
+        .domain(xExtent)//input
+        .range([0, width - margin.left - margin.right]);//output
+
+    const yScale = d3.scaleLinear()
+        .domain([0,d3.max(data, d => d.temp)])//input
+        .range([chartHeight, 0])//output
+        .nice();
+
+    const svg = d3.select("body").append("svg")
+    .attr("height", "100%")
+    .attr("width", "100%");
+
+    const yAxis = d3.axisLeft(yScale).ticks(4).tickSize(20).tickPadding(20);
+    const chartGroup = svg.append('g').attr('class','chartGroup').attr('transform',`translate(${margin.left},${margin.top})`);
+    chartGroup.append('g').attr('class','axis y').call(yAxis);
+    chartGroup.append('g').attr('class','axis x').attr('transform',`translate(0,${chartHeight})`).call(d3.axisBottom(xScale).tickValues(data.map(d=>d.day)).tickFormat(d3.timeFormat('%b %d')));
+    
+
+    const line = d3.line()
+        .x(d=>d.day*40)
+        .y(d=>yScale(d.temp))
+        .defined(d=>!isNaN(d.temp));
+
+    const group = chartGroup.append("g").attr('class','lineChart');
+    
+    group.append('path')
+        .datum(data)
+        .attr('d',line);
+        // const groups = svg.selectAll('g').data(interpolateTypes)
+        //     .enter().append('g')
+        //     .attr('class',(d,i)=>'g'+i)
+        //     .attr('transform',(d,i)=>{
+        //         const x = (i%cols) * chartWidth;
+        //         const y = Math.floor(i/cols)*chartHeight;
+        //         return `translate(${x},${y})`;
+        //     });
+
+        // groups.each(function(interpolate, i){
+        //     let area = d3.area()
+        //         .x(d=>d.x*5)
+        //         .y1(d=>d.y)
+        //         .y0(h)
+        //         .curve(interpolate)
+        //         .defined(d=> !isNaN(d.x) && !isNaN(d.y));
+
+        //     d3.select(this).append("path")
+        //         .datum(data)
+        //         .attr('d', area);
+        // })
+
+
+
+    </script>
+
+</body>
+</html>

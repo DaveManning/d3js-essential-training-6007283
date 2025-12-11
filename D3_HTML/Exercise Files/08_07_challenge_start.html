@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>08_07 - Challenge</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        circle {
+            fill: pink;
+            stroke: black;
+            stroke-width: 2px;
+        }
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:red;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        let width = document.documentElement.clientWidth;
+        let height = document.documentElement.clientHeight;
+        
+        const margin = {"right": 50, "top": 50, "bottom": 50, "left": 50}
+
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+
+        height -= margin.top + margin.bottom;
+        width -= margin.left + margin.right; 
+        
+        const data = [
+            { day: "Mon", desktop: 100, mobile: 80, tablet: 30 },
+            { day: "Tue", desktop: 120, mobile: 90, tablet: 40 },
+            { day: "Wed", desktop: 90, mobile: 70, tablet: 20 },
+            { day: "Thu", desktop: 110, mobile: 100, tablet: 50 },
+            { day: "Fri", desktop: 95, mobile: 85, tablet: 35 }
+            ];
+
+
+
+    </script>
+
+</body>
+</html>

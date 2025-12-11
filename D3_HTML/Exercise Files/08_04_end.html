@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>08_04 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:red;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+        
+        let dataArray = [5, 11, 16];
+
+        const boundData = svg.selectAll("circle").data(dataArray);
+        const enterSelection = boundData.enter();
+        const exitSelection = boundData.exit();
+
+        let previousX = 0;
+
+        enterSelection.append("circle")
+            .attr("r", d=>d*5)
+            .attr("cx", (d,i) => 
+                {
+                    let radius = d*5;
+                    let x = previousX + radius + 10;
+                    previousX = x + radius;
+                    return x; 
+                }
+            )
+            .attr("cy", 400)
+            .attr("fill", "pink")
+        
+        dataArray = [4, 7, 3, 4];//data changes
+
+        let boundData2 = svg.selectAll("circle").data(dataArray);
+
+        boundData2.join(
+            enter => enter.append('circle')
+                            .attr("r", d=>d*5)
+                            .attr("cx", (d,i) => 
+                                {
+                                    let radius = d*5;
+                                    let x = previousX + radius + 10;
+                                    previousX = x + radius;
+                                    return x; 
+                                }
+                            )
+                            .attr("cy", 400)
+                            .attr("fill", "blue"),
+
+            update => update.attr("r", d=>d*5)
+                            .attr("cx", (d,i) => 
+                                {
+                                    let radius = d*5;
+                                    let x = previousX + radius + 10;
+                                    previousX = x + radius;
+                                    return x; 
+                                }
+                            )
+                            .attr("cy", 400)
+                            .attr("fill", "blue"),
+
+            exit => exit.remove()
+        );
+        // boundData2.exit().remove();
+        // const enterSelection2 = boundData2.enter().append('circle');
+
+        // boundData2 = boundData2.merge(enterSelection2)
+        //     .attr("r", d=>d*5)
+        //     .attr("cx", (d,i) => 
+        //         {
+        //             let radius = d*5;
+        //             let x = previousX + radius + 10;
+        //             previousX = x + radius;
+        //             return x; 
+        //         }
+        //     )
+        //     .attr("cy", 400)
+        //     .attr("fill", "blue");
+
+        
+
+
+
+
+    </script>
+
+</body>
+</html>

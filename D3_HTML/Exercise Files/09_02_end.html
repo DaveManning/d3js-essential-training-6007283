@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>09_02 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        
+        circle {
+            transition: fill 1s ease, transform 1s ease, opacity 1s ease;
+        }
+
+        circle:hover {
+            fill: red;
+            transform: translate(5px,5px);
+            opacity: 0.5;
+        }
+
+        rect:not(.selected) {
+            opacity: 0.2;
+        }
+
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:red;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+        
+        const dataArray = [5, 11, 16];
+
+        const boundData = svg.selectAll("rect").data(dataArray);
+        const enterSelection = boundData.enter();
+
+        let previousX = 0;
+
+        enterSelection.append("circle")
+            .attr("r", d=>d*5)
+            .attr("cx", (d,i) => 
+                {
+                    let radius = d*5;
+                    let x = previousX + radius + 10;
+                    previousX = x + radius;
+                    return x; 
+                }
+            )
+            .attr("cy", 400);
+
+    </script>
+
+</body>
+</html>

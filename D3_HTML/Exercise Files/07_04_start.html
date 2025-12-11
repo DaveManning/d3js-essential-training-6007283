@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>07_04 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+
+        text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        g.tick line {
+            stroke: orange;
+        }
+
+        g.axis path {
+            stroke: black;
+        }
+
+        rect {
+            stroke: white;
+            stroke-width: 2px;
+        }
+
+        /* line, path {
+            stroke: steelblue;
+            stroke-width: 5px;
+            fill: none;
+        } */
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+
+    const margin = { 'left':50,'top':50,'right':50,'bottom':50 }
+    const width = document.documentElement.clientWidth - margin.left - margin.right;
+    const height = document.documentElement.clientHeight - margin.top - margin.bottom;
+    
+    const svg = d3.select("body").append("svg").attr("height", "100%").attr("width", "100%");
+    const chartGroup = svg.append('g').attr('class','chartGroup').attr('transform',`translate(${margin.left+width/2},${margin.top+height/2})`);
+
+    d3.csv("https://raw.githubusercontent.com/LinkedInLearning-VizData/d3/refs/heads/main/pieChart.csv")
+        .then(function(data){
+            // data.forEach(d=>d.Value = +d.Value);
+            const transformedData = data.map(d=> ({
+                category: d.Category.toLowerCase(),
+                value: +d.Value
+            }))
+
+            const pie = d3.pie().value(d=>d.value);
+            const pieData = pie(transformedData);
+            const radius = Math.min(width, height)/2;
+            const colorScale = d3.scaleOrdinal(['pink','blue']);
+
+            const arc = d3.arc()
+                .innerRadius(0)
+                .outerRadius(radius);
+
+            chartGroup.selectAll('path')
+                .data(pieData)
+                .enter()
+                .append('path')
+                .attr('d',arc)
+                .attr('fill',d=>colorScale(d.data.category));
+            console.log(pieData);
+        });
+ 
+        
+ 
+    
+
+    </script>
+
+</body>
+</html>

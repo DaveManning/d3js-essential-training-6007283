@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>06_06 - Solution</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+        }
+
+        g.tick line {
+            stroke: orange;
+        }
+
+        g.axis path {
+            stroke: black;
+        }
+
+        line, path {
+            stroke: steelblue;
+            stroke-width: 5px;
+            fill: none;
+        }
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+
+    const margin = { 'left':100,'top':100,'right':50,'bottom':50 }
+    const width = document.documentElement.clientWidth - margin.left - margin.right;
+    const height = document.documentElement.clientHeight - margin.top - margin.bottom;
+    
+    const svg = d3.select("body").append("svg").attr("height", "100%").attr("width", "100%");
+    const chartGroup = svg.append('g').attr('class','chartGroup').attr('transform',`translate(${margin.left},${margin.top})`);
+
+    d3.csv("https://raw.githubusercontent.com/LinkedInLearning-VizData/d3/refs/heads/main/flatData.csv")
+        .then(function(data){
+            data.forEach(d=>{
+                d.Date = new Date(d.Date);
+                d.Value = +d.Value;
+            })
+            console.log(data);
+
+            const xScale = d3.scaleTime()
+                .domain(d3.extent(data, d=>d.Date))
+                .range([0, width]);
+
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(data, d=>d.Value)])
+                .range([height, 0])
+                .nice();
+            
+            chartGroup.append('g').attr('class','x axis').attr('transform',`translate(0,${height})`).call(d3.axisBottom(xScale).ticks(4));
+            chartGroup.append('g').attr('class','y axis').attr('transform',`translate(0,0)`).call(d3.axisLeft(yScale));
+
+            const line = d3.line()
+                .x(d=>xScale(d.Date))
+                .y(d=>yScale(d.Value))
+                .curve(d3.curveMonotoneX);
+            
+            chartGroup.append('path')
+                .datum(data)
+                .attr('class','lineChart')
+                .attr('d',line)
+                .attr('stroke', 'steelblue')
+                .attr('stroke-width', '2');
+
+        });
+
+    </script>
+
+</body>
+</html>

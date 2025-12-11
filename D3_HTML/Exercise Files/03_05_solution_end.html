@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>03_05 - Solution</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+        }
+
+        line {
+            stroke: green;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+        // .attr("viewBox", "0 0 " + width + " " + height)
+        // .attr("preserveAspectRatio", "xMidYMid meet");
+        
+        // svg.append("rect")
+        //     .attr("x","300")
+        //     .attr("y","200")
+        //     .attr("height","100")
+        //     .attr("width","200");
+
+        // svg.append("text")
+        //    .text("Hello World!")
+        //    .attr("x","400")
+        //    .attr("text-anchor","middle")
+        //    .attr("dominant-baseline","middle")
+        //    .attr("y","250");
+
+
+        // const dataArray = [5, 11, 16];
+        const labelArray = ['Stop','Wait','Go'];
+        const colourArray = ['red','orange','green'];
+
+        const boundData = svg.selectAll("circle").data(labelArray);
+        const enterSelection = boundData.enter();
+
+        enterSelection.append("circle")
+            .attr("cy", (d,i)=>(i*110)+200)
+            .attr("cx", 300)
+            .attr("r", 50)
+            .attr("fill",(d,i)=>colourArray[i])
+
+        enterSelection.append("text")
+            .attr("x","300")
+            .attr("text-anchor","middle")
+            .attr("dominant-baseline","middle")
+            .attr("y",(d,i)=>(i*110)+200)
+            .text(d=>d);
+
+    </script>
+
+</body>
+</html>

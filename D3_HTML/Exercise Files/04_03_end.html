@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>04_03 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:white;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+        }
+
+        line, path {
+            /* stroke: green;
+            stroke-width: 5px; */
+            fill: steelblue;
+        }
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+                const data = [
+            { x: 0, y: 31 }, { x: 1, y: 15 }, { x: 2, y: 88 }, { x: 3, y: 47 }, { x: 4, y: 26 },
+            { x: 5, y: 16 }, { x: 6, y: 27 }, { x: 7, y: 21 }, { x: 8, y: 71 }, { x: 9, y: 79 },
+            { x: 10, y: 48 }, { x: 11, y: 91 }, { x: 12, y: 50 }, { x: 13, y: 30 }, { x: 14, y: 77 },
+            { x: 15, y: 64 }, { x: 16, y: 13 }, { x: 17, y: 82 }, { x: 18, y: 38 }, { x: 19, y: 58 },
+            { x: 20, y: 92 }, { x: 21, y: 47 }, { x: 22, y: 33 }, { x: 23, y: 76 }, { x: 24, y: 14 },
+            { x: 25, y: 89 }, { x: 26, y: 55 }, { x: 27, y: 43 }, { x: 28, y: 90 }, { x: 29, y: 22 },
+            { x: 30, y: 35 }, { x: 31, y: 67 }, { x: 32, y: 12 }, { x: 33, y: 40 }, { x: 34, y: 97 },
+            { x: 35, y: 56 }, { x: 36, y: 73 }, { x: 37, y: 19 }, { x: 38, y: 88 }, { x: 39, y: 45 },
+            { x: 40, y: 79 }, { x: 41, y: 29 }, { x: 42, y: 62 }, { x: 43, y: 94 }, { x: 44, y: 50 },
+            { x: 45, y: 17 }, { x: 46, y: 85 }, { x: 47, y: 37 }, { x: 48, y: 66 }, { x: 49, y: 23 }
+            ];
+
+     const interpolateTypes = [
+        d3.curveLinear,
+        d3.curveNatural,
+        d3.curveStep,
+        d3.curveBasis,
+        d3.curveCardinal,
+        d3.curveCardinalOpen
+     ]
+
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+       
+        const rows = 3, cols = 2;
+        const chartWidth = width / cols, chartHeight = height / rows;
+        const h = chartHeight / 2;
+  
+        // const line = d3.line()
+        //     .x(d=>d.x*10)
+        //     .y(d=>d.y)
+        //     .curve(d3.curveMonotoneX);
+
+        // const area = d3.area()
+        //     .x(d=>d.x*10)
+        //     .y1(d=>d.y)
+        //     .y0(height/2)
+        //     .curve(d3.curveMonotoneX);
+        
+        const groups = svg.selectAll('g').data(interpolateTypes)
+            .enter().append('g')
+            .attr('class',(d,i)=>'g'+i)
+            .attr('transform',(d,i)=>{
+                const x = (i%cols) * chartWidth;
+                const y = Math.floor(i/cols)*chartHeight;
+                return `translate(${x},${y})`;
+            });
+
+        groups.each(function(interpolate, i){
+            let area = d3.area()
+                .x(d=>d.x*5)
+                .y1(d=>d.y)
+                .y0(h)
+                .curve(interpolate);
+            d3.select(this).append("path")
+                .datum(data)
+                .attr('d', area);
+        })
+
+
+
+    </script>
+
+</body>
+</html>

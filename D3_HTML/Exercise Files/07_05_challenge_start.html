@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>07_05 - Challenge</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+
+        text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        g.tick line {
+            stroke: orange;
+        }
+
+        g.axis path {
+            stroke: black;
+        }
+
+        rect {
+            stroke: white;
+            stroke-width: 2px;
+        }
+
+        /* line, path {
+            stroke: steelblue;
+            stroke-width: 5px;
+            fill: none;
+        } */
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+
+    const margin = { 'left':50,'top':50,'right':50,'bottom':50 }
+    const width = document.documentElement.clientWidth - margin.left - margin.right;
+    const height = document.documentElement.clientHeight - margin.top - margin.bottom;
+    
+    const svg = d3.select("body").append("svg").attr("height", "100%").attr("width", "100%");
+    const chartGroup = svg.append('g').attr('class','chartGroup').attr('transform',`translate(${margin.left},${margin.top})`);
+
+       
+ 
+    
+
+    </script>
+
+</body>
+</html>

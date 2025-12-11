@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>01_06 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        svg {
+            background-color: pink; 
+            border: 1px solid black; 
+        }
+        circle {
+            fill: pink;
+            stroke: black;
+            stroke-width: 2px;
+        }
+        text {
+            fill:red;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>console.log(d3.version);
+        let myArray = [1,2,3,4];
+        console.log(myArray);
+
+    </script>
+    <svg width="100%" height="100%" viewBox="0 0 200 100" preserveAspectRatio="xMidYMid meet">
+        <circle r="50" cx="100" cy="100"></circle>
+        <text x="100" y="100">Hello!</text>
+    </svg>
+</body>
+</html>

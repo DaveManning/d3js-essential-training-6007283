@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>06_02 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:black;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 32px;
+        }
+
+        g.tick line {
+            stroke: orange;
+        }
+
+        g.axis path {
+            stroke: black;
+        }
+
+        line, path {
+            stroke: steelblue;
+            stroke-width: 5px;
+            fill: none;
+        }
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+    // const data = [
+    //     { day: 0, temp: 12 },
+    //     { day: 1, temp: 17 },
+    //     { day: 2, temp: 15 },
+    //     { day: 3, temp: 15 }, 
+    //     { day: 4, temp: 18 },
+    //     { day: 5, temp: 92 },
+    //     { day: 6, temp: 16 }
+    //     ];
+
+
+    d3.csv("https://raw.githubusercontent.com/LinkedInLearning-VizData/d3/refs/heads/main/lineData.csv").then(function(data){
+        //process data 
+        data.forEach(d=>{
+            d.Value = +d.Value;
+            d.Date = new Date(d.Date);
+        })
+
+        const margin = { 'left':100,'top':100,'right':50,'bottom':50 }
+    
+        const width = document.documentElement.clientWidth - margin.left - margin.right;
+        const height = document.documentElement.clientHeight - margin.top - margin.bottom;
+        
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d.Value)])//input
+            .range([height, 0])//output
+            .nice();
+
+
+        const xScale = d3.scaleTime()
+            .domain(d3.extent(data, d=> d.Date))//input
+            .range([0, width]); //output
+    
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+    
+        const yAxis = d3.axisLeft(yScale);
+        
+        const chartGroup = svg.append('g').attr('class','chartGroup').attr('transform',`translate(${margin.left},${margin.top})`);
+        chartGroup.append('g').attr('class','axis y').call(yAxis);
+             
+        const line = d3.line()
+            .x(d=>xScale(d.Date))
+            .y(d=>yScale(d.Value))
+            .defined(d=>!isNaN(d.Value));
+    
+        const group = chartGroup.append("g").attr('class','lineChart');
+        
+        group.append('path')
+            .datum(data)
+            .attr('d',line);
+        
+    });
+
+
+    </script>
+
+</body>
+</html>

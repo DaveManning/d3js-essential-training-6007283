@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08_01 - D3.js Essential Training</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- Import D3 first -->
+    <style>
+            html,body {height: 100%; width: 100%;}
+            html,body,blockquote,li,a,div,section,code,h1,h2,h3,h4,h5,h6,p,pre{margin:0;padding:0;font-family: "Noto Serif", "serif"}
+            line { stroke: red; }
+            g.tick line {stroke: orange; } 
+            g.tick text { font-size:12px; fill: orange; }
+            .g2 path { fill: pink; }
+
+            .category-A { fill: #edafb8; }
+            .category-B { fill: #b0c4b1; }
+            .category-C { fill: #cdb4db; }
+    </style>
+</head>
+<body>
+    <script>
+
+        const margin = {"right": 50, "top": 50, "bottom": 50, "left": 50}
+        let width = document.documentElement.clientWidth ;
+        let height = document.documentElement.clientHeight;
+
+        const svg = d3.select("body")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("viewBox", "0 0 " + width + " " + height)
+            .attr("preserveAspectRatio", "xMidYMid meet");
+
+        height -= margin.top + margin.bottom;
+        width -= margin.left + margin.right;
+
+        // Example: Generate 30 days of data starting from 2023-01-01
+        const initialData = generateStackedData("2023-01-01", 30);
+        const stack = d3.stack().keys(['Category A','Category B','Category C']);
+        const series = stack(initialData);
+        console.log(series);
+
+        const xScale = d3.scaleTime()
+            .domain(d3.extent(initialData, d=>d.date))
+            .range([0, width]);
+        
+        const yScale = d3.scaleLinear()
+            .domain([0, d3.max(series[series.length-1], d=>d[1])])
+            .range([height, 0])
+            .nice();
+
+        console.log('0 ', yScale(0));
+        console.log('400 ', yScale(400));
+        console.log('200 ', yScale(200));
+
+
+
+    function generateStackedData(startDate, numDays) {
+        const categories = ["Category A", "Category B", "Category C"];
+        const data = [];
+        
+        // Generate dates and values
+        for (let i = 0; i < numDays; i++) {
+            const date = new Date(startDate);
+            date.setDate(date.getDate() + i); // Increment date
+
+            const entry = {date: date }
+
+            // Generate random values for each category
+            categories.forEach(category => {
+                entry[category] = Math.floor(Math.random() * 100) + 50; // Random values between 50-150
+            });
+
+            data.push(entry);
+        }
+        
+        return data;
+    }
+    </script>
+</body>
+</html>

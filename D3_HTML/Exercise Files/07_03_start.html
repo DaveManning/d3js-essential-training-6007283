@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>07_03 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+ 
+        ellipse {
+            fill: blue;
+        }
+
+        text {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        g.tick line {
+            stroke: orange;
+        }
+
+        g.axis path {
+            stroke: black;
+        }
+
+        rect {
+            stroke: white;
+            stroke-width: 2px;
+        }
+
+        line, path {
+            stroke: steelblue;
+            stroke-width: 5px;
+            fill: none;
+        }
+
+        .g2 path {
+            fill: pink;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+
+
+    const margin = { 'left':100,'top':100,'right':50,'bottom':50 }
+    const width = document.documentElement.clientWidth - margin.left - margin.right;
+    const height = document.documentElement.clientHeight - margin.top - margin.bottom;
+    
+    const svg = d3.select("body").append("svg").attr("height", "100%").attr("width", "100%");
+    const chartGroup = svg.append('g').attr('class','chartGroup').attr('transform',`translate(${margin.left},${margin.top})`);
+
+    d3.json("https://raw.githubusercontent.com/LinkedInLearning-VizData/d3/refs/heads/main/hierarchy.json")
+    .then(function(data){
+        const root = d3.hierarchy(data);
+        root.sum(d=>d.value);
+        
+        
+        const treemapLayout = d3.treemap()
+        .size([width, height])
+        .padding(0);
+        
+        treemapLayout(root);
+        
+        console.log(root);
+
+        const nodes = chartGroup.selectAll('rect')
+        .data(root.leaves())
+        .enter()
+        .append('rect')
+        .attr('x',d=>d.x0)
+        .attr('y',d=>d.y0)
+        .attr('width',d=>d.x1 - d.x0)
+        .attr('height',d=>d.y1 - d.y0)
+        .attr('fill','steelblue');
+        // const treeLayout = d3.tree()
+        //     .size([width, height]);
+        
+        // treeLayout(root);
+
+
+        // const links = chartGroup.selectAll('.link')
+        //     .data(root.links())
+        //     .enter()
+        //     .append('path')
+        //     .attr('class','link')
+        //     .attr('fill', 'none')
+        //     .attr('stroke','steelblue')
+        //     .attr('stroke-width','2')
+        //     .attr('d',d3.linkVertical().x(d=>d.x).y(d=>d.y));
+
+        // // console.log(root.descendants());
+        // const nodes = chartGroup.selectAll('.node')
+        //     .data(root.descendants())
+        //     .enter()
+        //     .append('g')
+        //     .attr('class','node')
+        //     .attr('transform',d=>`translate(${d.x},${d.y})`);
+
+        // nodes.append('circle')
+        //     .attr('r',15)
+        //     .attr('fill','steelblue');
+        // nodes.append('text')
+        //     .attr('dy',-20)
+        //     .attr('text-anchor','middle')
+        //     .attr('fill','steelblue')
+        //     .text(d=>d.data.name);
+
+
+
+
+    });
+ 
+        
+ 
+    
+
+    </script>
+
+</body>
+</html>

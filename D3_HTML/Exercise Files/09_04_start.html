@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>09_04 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:red;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+        
+        let dataArray = [5, 11, 16];
+
+        const boundData = svg.selectAll("circle").data(dataArray);
+        const enterSelection = boundData.enter();
+        const exitSelection = boundData.exit();
+
+        let spacing = 5;
+
+        enterSelection.append("circle")
+            .attr("r", d=>d*5)
+            .attr("cx", (d, i) => {
+                let previous = dataArray.slice(0, i); // get all values before this one
+                let totalX = previous.reduce((acc, val) => acc + val * 10 + spacing, 0);
+                return totalX + d * 5; // center this circle
+            })
+            .attr("cy", 400)
+            .attr("fill", "pink");
+        
+        dataArray = [5,11,16, 14];//data changes
+
+        let boundData2 = svg.selectAll("circle").data(dataArray);
+
+        boundData2.join(
+            enter => enter.append('circle').attr("fill", "blue").attr('cy','0').attr('r','5')
+                .transition().duration(2000).attr("cy", 400).ease(d3.easeBounce)
+                .transition().duration(2000).attr("r", d=>d*5).ease(d3.easeBounce),
+
+            update => update.attr("cy", 400).attr('r',d=>d*5),
+
+            exit => exit.remove()
+        )
+        .attr("cx", (d, i) => {
+            let previous = dataArray.slice(0, i); // get all values before this one
+            let totalX = previous.reduce((acc, val) => acc + val * 10 + spacing, 0);
+            return totalX + d * 5; // center this circle
+        })
+        
+
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>09_05 - D3.js Essential Training</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- Import D3 first -->
+    <style>
+            html,body {height: 100%; width: 100%;}
+            html,body,blockquote,li,a,div,section,code,h1,h2,h3,h4,h5,h6,p,pre{margin:0;padding:0;font-family: "Noto Serif", "serif"}
+            line { stroke: red; }
+            g.tick line {stroke: orange; } 
+            g.tick text { font-size:12px; fill: orange; }
+            .g2 path { fill: pink; }
+    </style>
+</head>
+<body>
+    <script>
+        const margin = {"right": 50, "top": 50, "bottom": 50, "left": 50}
+
+        let width = document.documentElement.clientWidth ;
+        let height = document.documentElement.clientHeight;
+        height -= margin.top + margin.bottom;
+        width -= margin.left + margin.right;
+
+        const svg = d3.select("body")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("viewBox", "0 0 " + width + " " + height)
+            .attr("preserveAspectRatio", "xMidYMid meet");
+
+            const g = svg.append("g").attr("id","chart").attr("transform","translate("+margin.left+","+margin.top+")");
+
+        const dataArray = [5,11,18];
+
+        const boundDataSelection = g.selectAll("circle").data(dataArray);
+        const enterSelection = boundDataSelection.enter()
+            .append("circle")
+            .attr("cx", (d,i) => (i*130)+40)
+            .attr("cy", d => 100)
+            .attr("r", 50)
+            .attr("opacity",0.5)
+            .attr("fill", "steelblue")
+            .on("contextmenu", function(event) {
+                console.log(event)
+            });
+
+        const exitSelection = boundDataSelection.exit();
+
+        d3.select("body").on("wheel", function(event) {
+            // event.preventDefault();
+            
+            let zoomFactor = event.deltaY > 0 ? 1.1 : 0.9; // Zoom in or out
+            let viewBoxValues = svg.attr("viewBox").split(" ").map(Number);
+            
+            viewBoxValues[2] *= zoomFactor; // Adjust width
+            viewBoxValues[3] *= zoomFactor; // Adjust height
+
+            svg.attr("viewBox", viewBoxValues.join(" "));
+        });
+
+
+        let isDragging = false, startX, startY, viewBoxValues;
+
+svg.on("mousedown", function(event) {
+    isDragging = true;
+    startX = event.clientX;
+    startY = event.clientY;
+    viewBoxValues = svg.attr("viewBox").split(" ").map(Number);
+})
+.on("mousemove", function(event) {
+    if (!isDragging) return;
+
+    let dx = (startX - event.clientX) * 0.5; // Adjust sensitivity
+    let dy = (startY - event.clientY) * 0.5;
+
+    svg.attr("viewBox", 
+        `${viewBoxValues[0] + dx} ${viewBoxValues[1] + dy} ${viewBoxValues[2]} ${viewBoxValues[3]}`
+    );
+})
+.on("mouseup", () => isDragging = false)
+.on("mouseleave", () => isDragging = false);
+
+
+    </script>
+</body>
+</html>

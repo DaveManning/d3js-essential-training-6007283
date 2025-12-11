@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>05_07 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        circle {
+            fill: pink;
+            stroke: black;
+            stroke-width: 2px;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:red;
+            font-size:24px;
+            font-family: Arial, Helvetica, sans-serif;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        let width = document.documentElement.clientWidth;
+        let height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+        // .attr("viewBox", "0 0 " + width + " " + height)
+        // .attr("preserveAspectRatio", "xMidYMid meet");
+        
+        const margin = {'left': 50, 'right':50, 'top':50, 'bottom':50};
+        width -=margin.left + margin.right;
+        height -=margin.top + margin.bottom;
+
+        const chartGroup = svg.append('g').attr('class','chartGroup')
+            .attr('transform',`translate(${margin.left},${margin.top})`);
+            
+            const dataArray = [5, 11, 16];
+            const categories = ['Group A','Group B','Group C'];
+            
+            const xScale = d3.scaleBand()
+                .domain(categories)//input
+                .range([0, width])//output
+                .padding(0.5);
+            
+            const axisXGroup = chartGroup.append('g').attr('class','x axis')
+                .attr('transform',`translate(0,${height})`)
+                .call(d3.axisBottom(xScale));
+        
+        
+        const boundData = chartGroup.selectAll("rect").data(dataArray);
+        const enterSelection = boundData.enter();
+
+        enterSelection.append("rect")
+            .attr("height",d=>d*15)
+            .attr("width", xScale.bandwidth())
+            .attr("x", (d,i)=> xScale(categories[i]))
+            .attr("y", d=>height - (d*15));
+
+        // enterSelection.append("circle")
+        //     .attr("r", 5)
+        //     .attr("cx", (d,i)=> (i*60)+25)
+        //     .attr("cy", d=>400 - (d*15));
+
+    </script>
+
+</body>
+</html>

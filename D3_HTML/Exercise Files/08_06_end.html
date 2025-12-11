@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>08_06 - D3.js Essential Training</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script> <!-- Import D3 first -->
+    <style>
+            html,body {height: 100%; width: 100%;}
+            html,body,blockquote,li,a,div,section,code,h1,h2,h3,h4,h5,h6,p,pre{margin:0;padding:0;font-family: "Noto Serif", "serif"}
+            line { stroke: red; }
+            g.tick line {stroke: orange; } 
+            g.tick text { font-size:12px; fill: orange; }
+            .g2 path { fill: pink; }
+    </style>
+</head>
+<body>
+    <script>
+        const margin = {"right": 50, "top": 50, "bottom": 50, "left": 50}
+
+        let width = document.documentElement.clientWidth ;
+        let height = document.documentElement.clientHeight;
+
+        const svg = d3.select("body")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%")
+            .attr("viewBox", "0 0 " + width + " " + height)
+            .attr("preserveAspectRatio", "xMidYMid meet");
+
+        height -= margin.top + margin.bottom;
+        width -= margin.left + margin.right;        
+
+        const g = svg.append("g").attr("id","chart").attr("transform","translate("+margin.left+","+margin.top+")");
+
+        const generatedData = generateData();
+        // console.log(generatedData);
+
+        const monthNames = ['January','February','March','April'];
+
+       const latestDate = d3.max(generatedData, d=>d.Date);
+       const latestMonth = latestDate.getMonth();
+       const latestMonthString = monthNames[latestMonth]
+       const filteredData = generatedData.filter(d=>d.Month == latestMonthString);
+    //    console.log(filteredData);
+
+        // const array1 = [{value: 1},{value: 2}];
+        // const array2 = [{value: 3},{value: 4}];
+        // const array3 = [{value: 5},{value: 6}];
+
+        // const mergedArray = d3.merge([array1, array2, array3]);
+        // console.log(mergedArray);
+
+        const valueMap = d3.map(generatedData, d=>d.Value);
+        console.log(valueMap);
+
+        const sortedArray = d3.sort(valueMap, (a,b)=>a-b);
+        console.log(sortedArray);
+
+
+
+
+
+
+
+
+
+
+    function generateData() {
+        const data = [];
+        const startDate = new Date('2023-01-01'); // Start date
+        const months = ['January', 'February', 'March', 'April']; // Array of months
+        let value = 100; // Starting value for "Value"
+
+        // Loop over the months and generate data
+        for (let monthIndex = 0; monthIndex < months.length; monthIndex++) {
+            for (let day = 1; day <= 31; day++) {
+            // Create date for the current month and day
+            const currentDate = new Date(startDate.getFullYear(), monthIndex, day);
+
+            // If the date exceeds the current month's length, break
+            if (currentDate.getMonth() !== monthIndex) break;
+
+            // Generate value, here we're just incrementing it for simplicity
+            value = Math.floor(Math.random() * 20) + value;
+
+            // Push the data for each date
+            data.push({
+                Date: currentDate,
+                Value: value,
+                Month: months[monthIndex] // Assign the corresponding month name
+            });
+            }
+        }
+
+        return data;
+        }
+
+    </script>
+</body>
+</html>

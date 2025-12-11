@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>05_09 - Challenge</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    svg {
+      background-color: #f9f9f9;
+    }
+    .mercury {
+      fill: red;
+    }
+    .axis text {
+      font-size: 14px;
+      font-family: sans-serif;
+    }
+    .axis path,
+    .axis line {
+      stroke: black;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+  <script>
+    const svgWidth = 300;
+    const svgHeight = 500;
+    const margin = { top: 50, right: 60, bottom: 50, left: 60 };
+
+    const width = svgWidth - margin.left - margin.right;
+    const height = svgHeight - margin.top - margin.bottom;
+
+    const svg = d3.select("body")
+      .append("svg")
+      .attr("width", svgWidth)
+      .attr("height", svgHeight);
+
+    const chartGroupCelsius = svg.append("g")
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Temperature value in Celsius
+    const currentTempC = 36;
+
+    // Y scale for Celsius (0 to 100°C)
+    const yScaleC = d3.scaleLinear()
+      .domain([0, 100])
+      .range([height, 0]);
+
+    // Add left axis (Celsius)
+    chartGroupCelsius.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(yScaleC).ticks(10).tickFormat(d => d + "°C"));
+
+    chartGroupCelsius.append("text").text('Celsius').attr('text-anchor','middle').attr('transform','translate(0,-20)');
+
+    // Draw thermometer outline
+    chartGroupCelsius.append("rect")
+      .attr("x", width / 2 - 10)
+      .attr("y", 0)
+      .attr("width", 20)
+      .attr("height", height)
+      .attr("fill", "#eee")
+      .attr("stroke", "black");
+
+    // Draw mercury level
+    chartGroupCelsius.append("rect")
+      .attr("class", "mercury")
+      .attr("x", width / 2 - 10)
+      .attr("width", 20)
+      .attr("y", yScaleC(currentTempC))
+      .attr("height", height - yScaleC(currentTempC));
+
+    // TODO for students: Add right axis (Fahrenheit) using a scaleF and axisRight
+  </script>
+</body>
+</html>

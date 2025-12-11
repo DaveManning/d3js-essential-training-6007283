@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>08_04 - D3.js Essential Training</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        ellipse {
+            fill: blue;
+        }
+        rect {
+            fill: pink;
+        }
+        text {
+            fill:red;
+            /* stroke: black;
+            stroke-width: 1px; */
+            
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+    <script>
+        const width = document.documentElement.clientWidth;
+        const height = document.documentElement.clientHeight;
+        const svg = d3.select("body").append("svg")
+        .attr("height", "100%")
+        .attr("width", "100%");
+        
+        let dataArray = [5, 11, 16];
+
+        const boundData = svg.selectAll("circle").data(dataArray);
+        const enterSelection = boundData.enter();
+        const exitSelection = boundData.exit();
+
+        console.log('1st enter selection --> ', enterSelection);
+        console.log('1st exit selection --> ', exitSelection);
+
+        let previousX = 0;
+
+        enterSelection.append("circle")
+            .attr("r", d=>d*5)
+            .attr("cx", (d,i) => 
+                {
+                    let radius = d*5;
+                    let x = previousX + radius + 10;
+                    previousX = x + radius;
+                    return x; 
+                }
+            )
+            .attr("cy", 400)
+            .attr("fill", "pink")
+        
+        dataArray = [4, 7];
+
+        const boundData2 = svg.selectAll("circle").data(dataArray);
+        const enterSelection2 = boundData2.enter();
+        boundData2.exit().remove();
+
+        boundData2.attr('fill','blue');
+
+        // enterSelection2.append("circle")
+        //     .attr("r", d=>d*5)
+        //     .attr("cx", (d,i) => 
+        //         {
+        //             let radius = d*5;
+        //             let x = previousX + radius + 10;
+        //             previousX = x + radius;
+        //             return x; 
+        //         }
+        //     )
+        //     .attr("cy", 400)
+        //     .attr("fill", "blue");
+
+
+
+
+    </script>
+
+</body>
+</html>
