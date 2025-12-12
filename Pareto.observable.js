@@ -10,7 +10,7 @@ Automatically loads \`generateImpactAnalysisData_data.csv\`. Requires columns: \
   main.variable(observer("data")).define("data", ["require","FileAttachment"], async function(require, FileAttachment){
     const d3 = await require('d3@7');
     try {
-      const file = await FileAttachment("generateImpactAnalysisData_data.csv").text();
+      const file = await FileAttachment("Pareto_data.csv").text();
       return d3.csvParse(file);
     } catch(e) {
       console.warn("CSV not found via FileAttachment:", e.message);
