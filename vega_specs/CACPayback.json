@@ -1,0 +1,12 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "CAC Payback — template spec",
+  "data": { "values": [] },
+  "mark": { "type": "line", "point": true },
+  "encoding": {
+    "x": { "field": "Quarter", "type": "temporal", "axis": { "title": "Quarter" } },
+    "y": { "field": "value", "type": "quantitative", "axis": { "title": "CAC Payback", "format": ".1f" } }
+  },
+  "width": 380,
+  "height": 260
+}

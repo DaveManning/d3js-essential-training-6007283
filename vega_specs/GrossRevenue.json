@@ -1,0 +1,12 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Gross Revenue — template spec",
+  "data": { "values": [] },
+  "mark": { "type": "line", "point": true },
+  "encoding": {
+    "x": { "field": "Quarter", "type": "temporal", "axis": { "title": "Quarter" } },
+    "y": { "field": "value", "type": "quantitative", "axis": { "title": "Gross Revenue", "format": "$,.0f" } }
+  },
+  "width": 380,
+  "height": 260
+}
