@@ -4,7 +4,7 @@ export default function define(runtime, observer) {
   main.variable(observer()).define(["md"], function(md){
     return md`# Pareto Chart (Observable version)
 
-Automatically loads \`generateImpactAnalysisData_data.csv\`. Requires columns: \`Pain Points\` and impact metrics.`;
+Automatically loads \`Pareto_data.csv\`. Requires columns: \`Pain Points\` and impact metrics.`;
   });
 
   main.variable(observer("data")).define("data", ["require","FileAttachment"], async function(require, FileAttachment){
