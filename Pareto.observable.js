@@ -4,27 +4,27 @@
 // Cell 1: Title & Description
 md`# Pareto Chart (Observable version)
 
-Automatically loads \`Pareto_data.csv\`. Requires columns: \`Pain Points\` and impact metrics.`
+Automatically loads \`Pareto_data@2.csv\`. Requires columns: \`Pain Points\` and impact metrics.`
 
 // Cell 2: Load & Parse Data
-data = {
+paretoData = (async () => {
   const d3 = await require('d3@7');
   try {
-    const file = await FileAttachment("Pareto_data.csv").text();
+    const file = await FileAttachment("Pareto_data@2.csv").text();
     return d3.csvParse(file);
   } catch(e) {
     console.warn("CSV not found via FileAttachment:", e.message);
     return [];
   }
-}
+})()
 
 // Cell 3: Render Interactive Pareto Chart
 {
   const Plotly = await require('https://cdn.plot.ly/plotly-2.20.0.min.js');
 
   const container = html`<div style="width:100%;height:600px"></div>`;
-  if (!data || data.length === 0) {
-    container.append("\n", html`<div style="color:#666">No data loaded — attach Pareto_data.csv via FileAttachment.</div>`);
+  if (!paretoData || paretoData.length === 0) {
+    container.append("\n", html`<div style="color:#666">No data loaded — attach Pareto_data@2.csv via FileAttachment.</div>`);
     return container;
   }
 
@@ -39,7 +39,7 @@ data = {
 
   // Aggregate by Pain Points (mean), then sort descending
   const byPain = {};
-  data.forEach(d => {
+  paretoData.forEach(d => {
     const key = d['Pain Points'];
     if (!byPain[key]) byPain[key] = {count:0};
     byPain[key].count++;

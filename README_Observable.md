@@ -4,8 +4,8 @@ This guide explains how to use the Observable conversion files to visualize your
 
 ## Files Included
 
-- `Pareto.observable.js` — Pareto chart with dropdown selector (uses `Pareto_data.csv`)
-- `Scenario.observable.js` — Financial metrics dashboard (uses `QuarterlyPnL_data.csv`)
+- `Pareto.observable.js` — Pareto chart with dropdown selector (uses `Pareto_data@1.csv`)
+- `Scenario.observable.js` — Financial metrics dashboard (uses `QuarterlyPnL_data@4.csv`)
 - `vega_specs/` — Reusable Vega-Lite chart specifications
 
 ## How to Set Up Each Notebook
@@ -16,7 +16,7 @@ This guide explains how to use the Observable conversion files to visualize your
 
 **Step 2:** Attach the data file.
 - Click the **"Files"** panel on the left.
-- Upload `Pareto_data.csv`.
+- Upload `Pareto_data@1.csv`.
 
 **Step 3:** Add three cells.
 Open `Pareto.observable.js` in your editor and copy each section into a separate Observable cell:
@@ -25,7 +25,7 @@ Open `Pareto.observable.js` in your editor and copy each section into a separate
 ```javascript
 md`# Pareto Chart (Observable version)
 
-Automatically loads \`Pareto_data.csv\`. Requires columns: \`Pain Points\` and impact metrics.`
+Automatically loads \`Pareto_data@1.csv\`. Requires columns: \`Pain Points\` and impact metrics.`
 ```
 
 **Cell 2 — Load Data:**
@@ -33,7 +33,7 @@ Automatically loads \`Pareto_data.csv\`. Requires columns: \`Pain Points\` and i
 data = {
   const d3 = await require('d3@7');
   try {
-    const file = await FileAttachment("Pareto_data.csv").text();
+    const file = await FileAttachment("Pareto_data@1.csv").text();
     return d3.csvParse(file);
   } catch(e) {
     console.warn("CSV not found via FileAttachment:", e.message);
@@ -53,7 +53,7 @@ Copy the entire rendering block from `Pareto.observable.js` (starting with `{` a
 
 **Step 2:** Attach the data file.
 - Click **"Files"** panel.
-- Upload `QuarterlyPnL_data.csv`.
+- Upload `QuarterlyPnL_data@4.csv`.
 
 **Step 3:** Add cells.
 Open `Scenario.observable.js` and copy the sections:
@@ -70,7 +70,7 @@ Select a scenario to view financial metrics over quarters.`
 data = {
   const d3 = await require('d3@7');
   try {
-    const text = await FileAttachment("QuarterlyPnL_data.csv").text();
+    const text = await FileAttachment("QuarterlyPnL_data@4.csv").text();
     const rows = d3.csvParse(text);
 
     // helper to convert quarter strings like '2024-Q1' -> Date (start of quarter)
