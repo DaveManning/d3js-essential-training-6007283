@@ -19,7 +19,7 @@ paretoData = (async () => {
 })()
 
 // Cell 3: Render Interactive Pareto Chart
-{
+paretoChart = (async () => {
   const Plotly = await require('https://cdn.plot.ly/plotly-2.20.0.min.js');
 
   const container = html`<div style="width:100%;height:600px"></div>`;
@@ -132,4 +132,4 @@ paretoData = (async () => {
 
   Plotly.newPlot(container, traces, layout, {responsive: true});
   return container;
-}
+})()
